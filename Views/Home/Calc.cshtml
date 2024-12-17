@@ -1,0 +1,28 @@
+﻿@model CalcViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    Результат расчёта:<br />
+    <table class="table table-hover">
+        <tr>
+            <th>Координаты y, м</th>
+            @for (int y = 0; y < Model.ResultTable.GetLength(0); y++)
+            {
+                <th>@(y/2.0)</th>
+            }
+        </tr>
+
+        @for (int i = 0; i < Model.ResultTable.GetLength(1); i++)
+        {
+            <tr>
+                <td>@Formulas.GetResultRowName(i)</td>
+                @for (int y = 0; y < Model.ResultTable.GetLength(0); y++)
+                {
+                    <td>@Model.ResultTable[y, i]</td>
+                }
+            </tr>
+        }
+    </table>
+</div>

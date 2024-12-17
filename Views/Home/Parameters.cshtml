@@ -1,0 +1,20 @@
+﻿@model Formulas.Data
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-left">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <form action="/home/calc" method="post">
+        @foreach (var param in Formulas.Data.GetParameters(Model))
+        {
+            <div class="mb-3">
+                <label class="form-label">@param.ReadableName</label>
+                <input type="text" class="form-control" name="@param.Name" value="@param.Value">
+            </div>
+        }
+        <button class="btn btn-primary">Рассчитать</button>
+    </form>
+</div>
