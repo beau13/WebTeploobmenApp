@@ -63,6 +63,19 @@ namespace WebTeploobmenApp.Controllers
             }
 
             viewModel.ResultTable = result;
+            
+            viewModel.TempMaterial = [];
+            viewModel.TempGas = [];
+            viewModel.PositionsY = [];
+            viewModel.TempRaznitsa = [];
+
+            for (int i = 0; i < result.GetLength(0); i++)
+            {
+                viewModel.PositionsY.Add(i / 2.0);
+                viewModel.TempMaterial.Add(result[i, 5]);
+                viewModel.TempGas.Add(result[i, 6]);
+                viewModel.TempRaznitsa.Add(result[i, 7]);
+            }
 
             _context.Variants.Add(new Variant(viewModel) { UserId = GetUserId() });
             _context.SaveChanges();

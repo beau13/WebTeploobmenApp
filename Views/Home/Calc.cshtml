@@ -4,7 +4,7 @@
 }
 
 <div class="text-center">
-    Результат расчёта:<br />
+    Результаты расчёта:<br />
     <table class="table table-hover">
         <tr>
             <th>Координаты y, м</th>
@@ -25,4 +25,42 @@
             </tr>
         }
     </table>
+    <div id="chart"></div>
+    <div id="chart2"></div>
+    <script>
+        var positions = @Json.Serialize(Model.PositionsY);
+        positions.unshift("x");
+
+        var tempMaterial = @Json.Serialize(Model.TempMaterial);
+        tempMaterial.unshift("Температура окатышей, С");
+
+        var tempGas = @Json.Serialize(Model.TempGas);
+        tempGas.unshift("Температура воздуха, С");
+
+        var tempRaznitsa = @Json.Serialize(Model.TempRaznitsa);
+        tempRaznitsa.unshift("Разность температур, С");
+
+        var chart = c3.generate({
+            bindto: '#chart',
+            data: {
+                x: 'x',
+                columns: [
+                    positions,
+                    tempMaterial,
+                    tempGas,
+                ]
+            }
+        });
+
+        var chart2 = c3.generate({
+            bindto: '#chart2',
+            data: {
+                x: 'x',
+                columns: [
+                    positions,
+                    tempRaznitsa,
+                ]
+            }
+        });
+    </script>
 </div>
