@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebTeploobmenApp.Data;
 using WebTeploobmenApp.Models;
@@ -23,12 +24,15 @@ namespace WebTeploobmenApp.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Variants.ToList());
+            var variants = _context.Variants
+                .Where(x => x.UserId == null || x.UserId == GetUserId())
+                .ToList();
+            return View(variants);
         }
 
         public IActionResult Parameters(int id)
         {
-            Variant variant = _context.Variants.Find(id) ?? new Variant();
+            Variant variant = GetVariant(id) ?? new Variant();
             Formulas.Data data = variant;
             return View(data);
         }
@@ -60,15 +64,27 @@ namespace WebTeploobmenApp.Controllers
 
             viewModel.ResultTable = result;
 
-            _context.Variants.Add(new Variant(viewModel));
+            _context.Variants.Add(new Variant(viewModel) { UserId = GetUserId() });
             _context.SaveChanges();
 
             return View(viewModel);
         }
 
+        private int? GetUserId()
+        {
+            var userIdStr = User.FindFirst("UserId")?.Value;
+            int? userId = userIdStr == null ? null : int.Parse(userIdStr);
+            return userId;
+        }
+
+        private Variant GetVariant(int id)
+        {
+            return _context.Variants.FirstOrDefault(x => x.Id == id && (x.UserId == GetUserId() || x.UserId == null));
+        }
+
         public IActionResult Delete(int id)
         {
-            Variant variant = _context.Variants.Find(id);
+            Variant variant = GetVariant(id);
             if (variant != null)
             {
                 _context.Variants.Remove(variant);

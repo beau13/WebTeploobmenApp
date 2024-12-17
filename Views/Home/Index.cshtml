@@ -6,6 +6,7 @@
 <div class="text-left">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p><a href="/home/parameters/0">Новый расчёт</a></p>
 
     <table class="table table-hover">
         <thead>
@@ -13,7 +14,7 @@
                 <th>Номер варианта</th>
                 @foreach(var param in Formulas.Data.GetParameters())
                 {
-                    <th>@param.Name</th>
+                    <th>@param.ReadableName</th>
                 }
                 <th>Действия</th>
             </tr>
@@ -27,7 +28,10 @@
                     {
                         <td>@param.Value</td>
                     }
-                    <td><a href="/home/parameters/@variant.Id">Расчёт</a></td>
+                    <td>
+                        <a href="/home/parameters/@variant.Id">Расчёт</a>
+                        <a href="/home/delete/@variant.Id">Удалить</a>
+                    </td>
                 </tr>
             }
         </tbody>
